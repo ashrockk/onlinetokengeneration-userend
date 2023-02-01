@@ -1,0 +1,120 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Welcome {{data.get_name()}}</h1>
+<div class="user-body">
+<div class="menu-popup">
+    <div class="menu-popup-content">
+        <ul>
+            <li><a href="#">
+              <span class="icon"><i class="fa fa-home"></i></span>
+              <span class="tittle">Home</span>
+            </a></li>
+            <li><a href="#">
+                <span class="icon"><i class="fa fa-cog"></i></span>
+                <span class="title">Setting</span>
+            </a></li>
+            <li><a href="#">
+                <span class="icon"><i class="fa fa-sign-out"></i></span>
+                <span class="title" onclick="logout()">LogOut</span>
+            </a></li>
+        </ul>
+        <div class="notification" onclick="shownotificationcontent()">
+            <a href="#" class=".bell"><h1><i class="fa fa-bell" aria-hidden="true">
+                <h1><div class="msg-indication" id="msg-indication">.</div></h1></i></h1></a>
+        </div>
+    </div>
+</div>
+<div class="show-history">
+    <div href="#" class="show-history-button" onclick="showtokenhistory()">Token History</div>
+</div>
+
+<div class="history-of-token">
+    <div class="token-history-content">
+        <div class="close" onclick="closehistory()">x</div>
+        <div class="token-history">
+            {{data.checktokenonetime_request()}}
+        </div>
+    </div>
+</div>  
+</div>
+<div class="container">
+    <div class="bankavailable-menu">
+        <div class="top-menu">Banks Available
+        </div>
+        <div class="bank" onclick="showbankbranches()">abc</div>
+    </div>
+</div>
+<div class="pop-up-bankbranches">
+    <div class="bankbranches-content">
+        <div class="close" onclick="closebankbrachescontent()">X</div>
+        <h2>Available Braches:</h2>
+        <div class="branch" onclick="showtokenform()">Patan</div>
+    </div>
+</div>
+<div class="token-form-popup">
+    <form  method="GET" action="/loadtoken">
+    <div class="taketoken-content">
+        <div class="close" onclick="closetokenformcontent()">X</div>
+        <input type="submit" value="Get Token" name="action1" class="gettoken">        
+    </div>
+    </form>
+</div>
+<div class="tokenmsg">
+    <div class="tokenpop-up">
+        <form action="/tokenpage" method="POST">
+        <div class="close" onclick="closetokenmsg()">X</div>
+            {{data.msg}}
+    
+        </form>
+    </div>
+</div>
+
+<script>
+    function closetokenmsg() {
+        document.querySelector(".tokenmsg").style.display="None";
+        closebankbrachescontent()
+        closetokenformcontent()
+    }
+    function showmsg() {
+        document.querySelector(".tokenmsg").style.display="flex";
+    }
+    function showtokenform()
+    {
+        document.querySelector(".token-form-popup").style.display="flex";
+    }
+    function closetokenformcontent()
+    {
+        document.querySelector(".token-form-popup").style.display="none";
+    }
+    function showbankbranches()
+    {
+        document.querySelector(".pop-up-bankbranches").style.display="flex";
+    }
+    function closebankbrachescontent() {
+        document.querySelector(".pop-up-bankbranches").style.display="none";
+    }
+    function showtokenhistory() {
+        document.querySelector(".history-of-token").style.display="flex";
+    }
+    function logout() {
+        window.location.href = "/";
+    }
+    function shownotificationcontent()
+    {
+        document.querySelector(".notification-content").style.display="flex";
+        document.getElementById("msg-indication").style.color='darkgray';
+    }
+    function closenotifycontent()
+    { 
+        document.querySelector(".notification-content").style.display="none";
+        
+    }
+    function closehistory() {
+        document.querySelector(".history-of-token").style.display='none';        
+    }
+    
+</script>
+{% endblock %}
+
+
+

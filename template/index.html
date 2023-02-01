@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Queuing System</title>
+    <link rel="stylesheet" href="static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+<body>
+    <div class="heading">
+            <h1>
+                Online Token System for Banks
+            </h1>
+        </div>
+        {% block content %}
+        <div class="container">
+            <button  href="#" class="button" onclick="popup_login()">Login</button>
+            <button  href="#" class="button" onclick="popup_register()">Register</button>
+        </div>
+        
+         <div class="popup-login">
+            <form class="popup-login-content" action="/userpagevalid" method="POST">
+                <div class="close" onclick="close_screen()">X</div>
+                <h2>Log-In</h2>
+                <input type="email" name="email" id="email" placeholder="abc@gmail.com">
+                <input type="password" name="password" id="password" placeholder="password"><br>
+                <div class="forgotpassword" onclick="popup_forgotpassword()">Forgotpassword?</div><br>
+                <button href="#" class="button1">Submit</button>
+            </form>
+         </div>
+         <div class="popup-register">
+            <form class="popup-register-content" method="POST" action="/sucesspage">
+                <div class="close" onclick="close_screen_register()">X</div>
+                <h2>Register</h2>
+                <input type="text" placeholder="name" name="name">
+                <input type="email" placeholder="abc@gmail.com" name="email">
+                <input type="password" placeholder="password" name="password"><br>
+                <input type="password" placeholder=" confrim password" name="confrim_password"><br>
+                <button href="#" class="button1">Submit</button>
+            </form>
+         </div>
+         <div class="popup-forgotpassword" method="POST" action="/confrim">
+            <form class="popup-forgotpassword-content">
+                <div class="close" onclick="close_screen_forgotpassword()">X</div>
+                <h2>Forgot Password</h2>
+                <input type="email" placeholder="abc@gmail.com">
+                <button href="#" class="button1">Submit</button>
+            </form>    
+            
+         </div>
+         {% endblock %}
+</body>
+
+<script >
+    function popup_login()
+    {
+        document.querySelector(".popup-login").style.display= "flex";
+    }
+    function close_screen() {
+        document.querySelector(".popup-login").style.display= "none";   
+        
+    }
+    function popup_register()
+    {
+        document.querySelector(".popup-register").style.display= "flex";
+    }
+    function close_screen_register() {
+        document.querySelector(".popup-register").style.display= "none";   
+        
+    }
+    function popup_forgotpassword()
+    {
+        close_screen();
+        document.querySelector(".popup-forgotpassword").style.display= "flex";
+        
+    }
+    function close_screen_forgotpassword() {
+        document.querySelector(".popup-forgotpassword").style.display= "none";   
+        
+    }
+    
+
+</script>
+</html>
