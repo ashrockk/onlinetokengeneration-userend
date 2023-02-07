@@ -43,6 +43,7 @@ class user_forlogin:
         else: 
             return 0
     def checktokenonetime_request(self):
+        tokenid=str()
         query="Select tokenid from tokendata where email=%s"
         values=(self.email)
         cursor.execute(query,(values,))
