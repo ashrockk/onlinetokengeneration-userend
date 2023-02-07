@@ -1,5 +1,5 @@
-from flask import Flask, render_template,request,json,redirect,session
-import socketio
+from flask import Flask, render_template,request,json,redirect,session,url_for
+import socketio,time
 from tokenavailable import get_token,check_avalailability,check_notification,check_onetimetokenrequest
 from databasecon import cnx,cursor
 app=Flask(__name__,template_folder="template")
@@ -101,25 +101,12 @@ def loadtoken():
             return "25%"
     elif request.method =='GET':
         if check_onetimetokenrequest(email)==0:
-            tokenid=get_token(email)
-            data={'msg1':tokenid}
+                tokenid=get_token(email)
+                data={'msg1':f'Your token request has been accepted.....{tokenid}'}
         else:
-            data={'msg1':"you have already taken token:"}
+                data={'msg1':"you have already taken token:"}
         return render_template("tokenpage.html",data=data)
-
-@app.route('/tokenpage',methods=['POST'])
-def tokenpage():
-    email=session.get('email')
-    if check_onetimetokenrequest():
-        if check_avalailability():
-            # a=get_token(email)
-            data={'msg':"hi"}
-            return render_template("userpage.html",data=data)
-        else :
-            data={'email':'"sry token not found:"'}
-            return render_template("userpage.html",data=data)
-    else:
-        return render_template("userpage.html",data='sry you have already taken token:')
+    
 
 if __name__=="__main__":
     sio.connect('http://localhost:5000')

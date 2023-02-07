@@ -1,4 +1,11 @@
 {% extends "index.html" %}
 {% block content %}
-<p> you token number is:{{data.msg1}}</p>
+<div class="popup-tokenrequest">
+    <form  action="/goback">
+        <input value="GoBack" class="go-back" onclick="window.history.back();">
+    <div class="popup-tokenrequest-content">
+        <p>{{data.msg1}}</p> 
+    </div>
+    </form>
+</div>
 {% endblock %}

@@ -1,15 +1,15 @@
 from databasecon import cnx,cursor
+import time
 def get_token(email):
         query="Select tokenid from tokendata where email=%s"
         values=email
-        ac_tokenid=str
-        access_pass=tuple()
         cursor.execute(query,(values,))
         access_pass=cursor.fetchall()
-        for i in access_pass:
-                ac_tokenid=i[0]
         cnx.commit()
-        return ac_tokenid
+        print(access_pass)
+        # for i in access_pass:
+        #         ac_tokenid=i[0]
+        return access_pass
 
 
 # system will indicate
@@ -37,7 +37,4 @@ def check_onetimetokenrequest(email):
         else:   
                 ## alredy taken
                 return 1
-
-
-
 
