@@ -1,11 +1,22 @@
-{% extends "index.html" %}
-{% block content %}
-<div class="popup-tokenrequest">
-    <form  action="/goback">
-        <input value="GoBack" class="go-back" onclick="window.history.back();">
-    <div class="popup-tokenrequest-content">
-        <p>{{data.msg1}}</p> 
-    </div>
+{% extends "userpage.html" %}
+{% block body %}
+<div class="whole-container">
+    <div class="close-btn">
+    <i class="fa fa-window-close" aria-hidden="true" onclick="gotouserpage()"></i></div>
+    <form action="/getpdf" method="POST" class="token-info">
+        <h2>TOKEN REQUEST</h2>
+        {% if data.checktokenforsuser() %}
+        <span class="reject"></span> <h2>Request has been rejected.</h2>
+        {% else %}
+        <span class="confirm"></span> <h2>Your Request has been Accepted.</p>
+        <br>See Details in History Icon.</h2>
+        {% endif %}
+
     </form>
 </div>
+<script>
+function gotouserpage() {
+    window.location.href="/userpage";
+}
+</script>
 {% endblock %}

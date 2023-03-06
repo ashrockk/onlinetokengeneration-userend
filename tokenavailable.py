@@ -1,18 +1,17 @@
 from databasecon import cnx,cursor
 import time
 def get_token(email):
-        query="Select tokenid from tokendata where email=%s"
+        query="Select tokenid,arrivaltime,waitingtime from tokendata where email=%s"
         values=email
         cursor.execute(query,(values,))
         access_pass=cursor.fetchall()
         cnx.commit()
         print(access_pass)
-        # for i in access_pass:
-        #         ac_tokenid=i[0]
-        return access_pass
+        tokeninfo=access_pass[0]
+        return tokeninfo
 
 
-# system will indicate
+# system will indicate                                  
 def check_avalailability():
         return 0
 
@@ -24,7 +23,7 @@ def check_notification():
 def check_onetimetokenrequest(email):
         ac_tokenid=None
         query="SELECT tokenid from tokendata where email=%s"
-        values=(email)
+        values=email
         access_pass=tuple()
         cursor.execute(query,(values,))
         access_pass=cursor.fetchall()

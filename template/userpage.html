@@ -1,117 +1,92 @@
 {% extends "index.html" %}
 {% block content %}
-<h1>Welcome {{data.get_name()}}</h1>
-<div class="user-body">
-<div class="menu-popup">
-    <div class="menu-popup-content">
-        <ul>
-            <li><a href="#">
-              <span class="icon"><i class="fa fa-home"></i></span>
-              <span class="tittle">Home</span>
-            </a></li>
-            <li><a href="#">
-                <span class="icon"><i class="fa fa-cog"></i></span>
-                <span class="title">Setting</span>
-            </a></li>
-            <li><a href="#">
-                <span class="icon"><i class="fa fa-sign-out"></i></span>
-                <span class="title" onclick="logout()">LogOut</span>
-            </a></li>
-        </ul>
-        <div class="notification" onclick="shownotificationcontent()">
-            <a href="#" class=".bell"><h1><i class="fa fa-bell" aria-hidden="true">
-                <h1><div class="msg-indication" id="msg-indication">.</div></h1></i></h1></a>
-        </div>
+    <header>
+      <h1>Hello,{{data.get_name()}}</h1>
+      <div class="history" onclick="showhistory()"><i class="fa fa-history" aria-hidden="true"></i>History</div>
+      <div class="logout" onclick="logout()">
+        Logout
+      </div> 
+      <div class="notify">
+        <i class="fa fa-bell" aria-hidden="true"><div class="notify-indicator">.</div></i>
+      </div>
+    </header>
+    <div class="historycontent">
+      {% if data.checktokenforsuser() %}
+      <span class="tokenid-history">TokenId:{{data.user_tokenid()}}</span>
+      <span class="arrivaltime-history">Arrival-Time:{{data.user_arrivaltime()}}</span>
+      <span class="waitingtime-history">Waiting-Time:{{data.user_waitingtime()}}</span>
+      <h2 style="color: aliceblue;">You are requested to come 5-10min Earlier.</h2>
+      {% else%}
+      <h4 style="color: aliceblue;">No any token found.</h4>
+      {% endif %}
     </div>
-</div>
-<div class="show-history">
-    <div href="#" class="show-history-button" onclick="showtokenhistory()">Token History</div>
-</div>
-
-<div class="history-of-token">
-    <div class="token-history-content">
-        <div class="close" onclick="closehistory()">x</div>
-        <div class="token-history">
-            {{data.checktokenonetime_request()}}
-        </div>
-    </div>
-</div>  
-</div>
-<div class="container">
-    <div class="bankavailable-menu">
-        <div class="top-menu">Banks Available
-        </div>
-        <div class="bank" onclick="showbankbranches()">abc</div>
-    </div>
-</div>
-<div class="pop-up-bankbranches">
-    <div class="bankbranches-content">
-        <div class="close" onclick="closebankbrachescontent()">X</div>
-        <h2>Available Braches:</h2>
-        <div class="branch" onclick="showtokenform()">Patan</div>
-    </div>
-</div>
-<div class="token-form-popup">
-    <form  method="GET" action="/loadtoken">
-    <div class="taketoken-content">
-        <div class="close" onclick="closetokenformcontent()">X</div>
-        <input type="submit" value="Get Token" name="action1" class="gettoken">        
-    </div>
-    </form>
-</div>
-<div class="tokenmsg" style="display: none;">
-    <div class="tokenpop-up">
-        <div class="close" onclick="closetokenmsg()">X</div>
-            {{data.msg1}}
-    </div>
-</div>
-
-<script>
-    function closetokenmsg() {
-        document.querySelector(".tokenmsg").style.display="None";
-        closebankbrachescontent()
-        closetokenformcontent()
-    }
-    function showmsg() {
-        document.querySelector(".tokenmsg").style.display="flex";
-    }
-    function showtokenform()
-    {
-        document.querySelector(".token-form-popup").style.display="flex";
-    }
-    function closetokenformcontent()
-    {
-        document.querySelector(".token-form-popup").style.display="none";
-    }
-    function showbankbranches()
-    {
-        document.querySelector(".pop-up-bankbranches").style.display="flex";
-    }
-    function closebankbrachescontent() {
-        document.querySelector(".pop-up-bankbranches").style.display="none";
-    }
-    function showtokenhistory() {
-        document.querySelector(".history-of-token").style.display="flex";
-    }
-    function logout() {
-        window.location.href = "/";
-    }
-    function shownotificationcontent()
-    {
-        document.querySelector(".notification-content").style.display="flex";
-        document.getElementById("msg-indication").style.color='darkgray';
-    }
-    function closenotifycontent()
-    { 
-        document.querySelector(".notification-content").style.display="none";
-        
-    }
-    function closehistory() {
-        document.querySelector(".history-of-token").style.display='none';        
-    }
     
-</script>
+    {% block body%}
+    <div class="container">
+      <form action="/loadtoken" method="POST" class="bank-select">
+        <label for="bank">Select Bank:</label>
+        <select id="bank" name="bank">
+          <option value="">Select Bank</option>
+          <option value="bank1">ABC Bank</option>
+        </select>
+        <br>
+        <label for="branch">Select Branch:</label>
+        <select id="branch" name="branch" disabled>
+          <option value="">Select Bank First</option>
+        </select>
+        <br>
+        <input type="submit" value="Get Token">
+      </form> 
+    </div>
+    {% endblock %} 
+    <script> 
+      function logout() {
+        window.location.href='/';
+      }
+  const bankSelect = document.getElementById('bank');
+  const branchSelect = document.getElementById('branch');
+
+  bankSelect.addEventListener('change', (event) => {
+    const bank = event.target.value;
+    if (bank) {
+      branchSelect.disabled = false;
+      // update branch options based on selected bank
+      switch (bank) {
+        case 'bank1':
+          updateBranchOptions(['Branch Chyasal']);
+          break;
+      }
+    } else {
+      branchSelect.disabled = true;
+      branchSelect.innerHTML = '<option value="">Select Bank First</option>';
+    }
+  });
+
+  function updateBranchOptions(branchOptions) {
+    branchSelect.innerHTML = '';
+    for (const branch of branchOptions) {
+      const option = document.createElement('option');
+      option.value = branch;
+      option.text = branch;
+      branchSelect.appendChild(option);
+    }
+  }
+ // Get a reference to the element to be toggled
+const historycontent= document.querySelector('.historycontent');
+const historybutton=document.querySelector('.history');
+historybutton.addEventListener('click', function() {
+if (historycontent.style.display =='none')
+{
+  historycontent.style.display='flex';
+}
+else
+{
+  historycontent.style.display='none';
+}
+});
+
+
+
+
+    </script>
 {% endblock %}
-
-
-
