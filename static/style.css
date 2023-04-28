@@ -160,7 +160,22 @@ body * {
     width: 90%;
   }
 }
-
+.notify-absent
+{
+  width: 500px;
+  top: 50%;
+  left: 33%;
+  position: fixed;
+  height: 50px;
+  align-items: center;
+  align-content: center;
+  background-color: red;
+  border-radius: 5px;
+  border: 1.5px solid white;
+  opacity: 0.4;
+  display: none;
+  
+}
 header {
 background-color: #201b2c;
 }
@@ -195,30 +210,7 @@ header .history .fa-history
   top: 8px;
   cursor: pointer;
 }
-header .notify .fa-bell
-{
-  color:whitesmoke;
-  font-size: 2pc;
-  position: absolute;
-  left: 95%;
-  cursor: pointer;
-  border: 2px solid white;
-  padding-top: 5px;
-  border-radius: 55%;
-}
-header .notify .fa-bell .notify-indicator 
-{
-  color:whitesmoke;
-  position: absolute;
-  left: 80%;
- bottom: 0%;
- margin-bottom: 10px;
- font-size: 100px;
-}
-header .notify .fa-bell:hover
-{
-  color: grey;
-}
+
 header .logout
 {
   
@@ -236,7 +228,7 @@ header .logout
   background-color: red;
 }
 
-header h1 ,header .logout,.notify, .history
+header h1 ,header .logout, .history
 {
   display: inline;
   margin: auto;
@@ -257,6 +249,7 @@ form {
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
+  
 }
 
 h1 {

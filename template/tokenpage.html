@@ -7,6 +7,8 @@
         <h2>TOKEN REQUEST</h2>
         {% if data.checktokenforsuser() %}
         <span class="reject"></span> <h2>Request has been rejected.</h2>
+        You have already taken a token<br>
+        Your token Number is {{data.user_tokenid()}}
         {% else %}
         <span class="confirm"></span> <h2>Your Request has been Accepted.</p>
         <br>See Details in History Icon.</h2>

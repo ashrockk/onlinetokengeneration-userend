@@ -6,9 +6,6 @@
       <div class="logout" onclick="logout()">
         Logout
       </div> 
-      <div class="notify">
-        <i class="fa fa-bell" aria-hidden="true"><div class="notify-indicator">.</div></i>
-      </div>
     </header>
     <div class="historycontent">
       {% if data.checktokenforsuser() %}
@@ -22,6 +19,24 @@
     </div>
     
     {% block body%}
+    <div class="notify-absent">
+     {%if data.check_absent()%}
+     <script>
+            var notifyAbsent = document.querySelector(".notify-absent");
+              notifyAbsent.style.display = "flex";
+              setTimeout(function() {
+              notifyAbsent.style.display = "none";
+          }, 10000);
+     </script>
+      Your token number {{data.get_absentdetail()}} has been cancelled
+      {% else %}
+      <script>
+        var notifyAbsent = document.querySelector(".notify-absent");
+        notifyAbsent.style.display = "none";
+      </script>
+      {{data.get_absentdetail()}}
+      {% endif %}
+    </div>
     <div class="container">
       <form action="/loadtoken" method="POST" class="bank-select">
         <label for="bank">Select Bank:</label>
@@ -38,7 +53,8 @@
         <input type="submit" value="Get Token">
       </form> 
     </div>
-    {% endblock %} 
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <script> 
       function logout() {
         window.location.href='/';
@@ -85,6 +101,27 @@ else
 }
 });
 
+const notifycontent= document.querySelector('.notify-content');
+const notifybutton=document.querySelector('.fa-bell');
+notifybutton.addEventListener('click', function() {
+if (notifycontent.style.display =='none')
+{
+  notifycontent.style.display='flex';
+}
+else
+{
+  notifycontent.style.display='none';
+}
+});
+function updateData() {
+            $.getJSON('/data_feed', function(data) {
+                if (!data)
+                {
+                  notifycontent.textContent="Your token has been cancelled:"
+                }
+            });
+        }
+        setInterval(updateData, 1000);
 
 
 

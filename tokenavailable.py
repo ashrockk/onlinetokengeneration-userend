@@ -37,3 +37,29 @@ def check_onetimetokenrequest(email):
                 ## alredy taken
                 return 1
 
+def absentusercheck(email):
+        query="Select tokenid from absenttable where email=%s"
+        values=email
+        cursor.execute(query,(values,))
+        try:
+                data=cursor.fetchone()
+                print(data)
+                if data[0]>0:
+                        return 1
+                else:
+                        return 0
+        except TypeError:
+                return 0
+        
+def absentdetail(email):
+        query="Select tokenid from absenttable where email=%s"
+        values=email
+        cursor.execute(query,(values,))
+        try:
+                data=cursor.fetchall()
+                if data is not None:
+                        return data[0]
+                else:
+                        return 0
+        except TypeError:
+                return 0

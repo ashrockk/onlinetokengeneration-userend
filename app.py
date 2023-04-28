@@ -1,7 +1,6 @@
-from flask import Flask, render_template,request,json,redirect,session,url_for,make_response
+from flask import Flask, render_template,request,json,redirect,session,url_for,make_response,Response
 import socketio,time
-from reportlab.pdfgen import canvas
-from tokenavailable import get_token,check_avalailability,check_notification,check_onetimetokenrequest
+from tokenavailable import get_token,check_avalailability,absentdetail,check_onetimetokenrequest,absentusercheck
 from databasecon import cnx,cursor
 app=Flask(__name__,template_folder="template")
 app.secret_key = 'secret_key'
@@ -47,15 +46,27 @@ class user_forlogin:
     def get_email(self):
         return self.email
     def user_tokenid(self):
-        usertoken_info=get_token(self.email)
-        return usertoken_info[0]
+        try:
+            usertoken_info=get_token(self.email)
+        except IndexError:
+            pass
+        else:
+            return usertoken_info[0]
     def user_arrivaltime(self):
         usertoken_info=get_token(self.email)
         return usertoken_info[1]
     def user_waitingtime(self):
         usertoken_info=get_token(self.email)
         return usertoken_info[2]
-    
+    def check_absent(self):
+        return absentusercheck(self.email)
+    def get_absentdetail(self):
+        try:
+            s=absentdetail(self.email)
+        except IndexError:
+            return 0
+        else:
+            return s    
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -107,6 +118,22 @@ def loadtoken():
     password=session.get('password')
     data=user_forlogin(name,email,password)  
     return render_template('tokenpage.html',data=data)
+# @app.route("/data")
+# def get_data():
+#     email=session.get('email')
+#     name=session.get('name')
+#     password=session.get('password')
+#     user=user_forlogin(name,email,password)
+#     token_id=user.user_tokenid()
+#     query="select status from absenttable where token_id=%s"
+#     values=token_id
+#     cursor.execute(query,(values,))
+#     data=cursor.fetchall()
+#     data = cursor.fetchall()
+#     print(data)
+# @app.route('/data_feed')
+# def data_feed():
+#     return Response(get_data(),mimetype='text/plain')
 
 @app.route("/userpage")
 def userpage():
